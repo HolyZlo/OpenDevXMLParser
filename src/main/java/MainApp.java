@@ -12,13 +12,11 @@ public class MainApp {
 
     public static void main(String[] args) {
         if (args.length > 1) {
-            System.out.println("Слишком большое количество агрументов, завершение!");
             System.out.println("Слишком большое количество агрументов, повторите попытку!");
             System.exit(0);
         }
         File file = new File(args[0]);
         if (!file.exists()) {
-            System.out.println("Файл не найден, завершение!");
             System.out.println("Файл не найден, повторите попытку!");
         }
         System.out.println("Файл " + args[0] + " обнаружен, начата обработка, ожидайте:");
@@ -37,7 +35,6 @@ public class MainApp {
                 IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Количество уникальных modification - " + count);
         System.out.println(count);
 
     }

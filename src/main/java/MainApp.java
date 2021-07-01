@@ -5,14 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MainApp {
 
     public static void main(String[] args) {
-        if (args.length > 1) {
-            System.out.println("Слишком большое количество агрументов, повторите попытку!");
+        if (args.length != 1) {
+            System.out.println("Неверное количество агрументов, повторите попытку!");
             System.exit(0);
         }
         File file = new File(args[0]);
@@ -20,22 +19,19 @@ public class MainApp {
             System.out.println("Файл не найден, повторите попытку!");
         }
         System.out.println("Файл " + args[0] + " обнаружен, начата обработка, ожидайте:");
-        Integer count = 0;
 
-        Map<String, Integer> hMap = new LinkedHashMap<String, Integer>();
+        Set<String> hashSet = new HashSet<>();
         try (StaxStreamProcessor processor = new StaxStreamProcessor(Files.newInputStream(Paths.get(args[0])))) {
             XMLStreamReader reader = processor.getReader();
 
             while (processor.doUntil(XMLEvent.START_ELEMENT, "modification")) {
-                if (!hMap.containsKey(reader.getAttributeValue(0))) {
-                    hMap.put(reader.getAttributeValue(0), count++);
-                }
+                hashSet.add(reader.getAttributeValue(0));
             }
         } catch (XMLStreamException |
                 IOException e) {
             e.printStackTrace();
         }
-        System.out.println(count);
+        System.out.println("Количество уникальных modification в файле  - " + hashSet.size());
 
     }
 }
